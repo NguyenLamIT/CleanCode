@@ -12,17 +12,19 @@ import java.util.GregorianCalendar;
 
 public class Employee {
     private final static double INCRE_MULTI_NUMBER = 0.06;
+    private final static int ONE_YEAR = 12;
+    private final static String WORK_MONTH_IN_USER_LANG = "%d năm %d tháng";
     private String name;
-    private String dob;
+    private Date dob;
     private Role role;
-    private String startDate;
+    private Date startDate;
     private double startSal;
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setDob(String dob) {
+    public void setDob(Date dob) {
         this.dob = dob;
     }
 
@@ -30,7 +32,7 @@ public class Employee {
         this.role = role;
     }
 
-    public void setStartDate(String startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
@@ -42,7 +44,7 @@ public class Employee {
         return name;
     }
 
-    public String getDob() {
+    public Date getDob() {
         return dob;
     }
 
@@ -50,7 +52,7 @@ public class Employee {
         return role;
     }
 
-    public String getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
@@ -59,50 +61,61 @@ public class Employee {
     }
 
     private int getAge() {
-        Calendar start = new GregorianCalendar();
-        Calendar end = new GregorianCalendar();
-        try {
-            start.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(dob));
-            end.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(new Date().toString()));
-        } catch (ParseException e) {
-            System.out.println("getAge->" + e.getMessage());
-        }
-        return end.get(Calendar.YEAR) - start.get(Calendar.YEAR);
+        Calendar now = getNow();
+        Calendar birthday = new GregorianCalendar();
+        birthday.setTime(dob);
+        return now.get(Calendar.YEAR) - birthday.get(Calendar.YEAR);
     }
 
     private double getSalary() {
         long month = getWorkMonth();
-        if (month >= 12) {
-            return startSal + INCRE_MULTI_NUMBER * startSal;
+        int salaryMonth = (int)(month / ONE_YEAR);
+        double result = startSal;
+        for (int i = 1; i <= salaryMonth; i++) {
+            result += INCRE_MULTI_NUMBER * result;
         }
 
-        return startSal;
+        return result;
     }
 
-    private long getWorkMonth() {
+    private Calendar getNow() {
+        Calendar now = new GregorianCalendar();
+        now.setTime(new Date());
+
+        return now;
+    }
+
+    private int getWorkMonth() {
         Calendar start = new GregorianCalendar();
-        Calendar end = new GregorianCalendar();
-        try {
-            start.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(startDate));
-            end.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(new Date().toString()));
-        } catch (ParseException e) {
-            System.out.println("getWorkMonth->" + e.getMessage());
-        }
-        int diffYear = end.get(Calendar.YEAR) - start.get(Calendar.YEAR);
-        return diffYear * 12 + end.get(Calendar.MONTH) - start.get(Calendar.MONTH);
+        start.setTime(startDate);
+        Calendar now = getNow();
+        int diffYear = now.get(Calendar.YEAR) - start.get(Calendar.YEAR);
+        return diffYear * ONE_YEAR + now.get(Calendar.MONTH) - start.get(Calendar.MONTH);
     }
+
+    private String getWorkMonthInUserLang() {
+        Calendar start = new GregorianCalendar();
+        start.setTime(startDate);
+        Calendar now = getNow();
+        int diffYear = now.get(Calendar.YEAR) - start.get(Calendar.YEAR);
+        int diffMonth = now.get(Calendar.MONTH) - start.get(Calendar.MONTH);
+
+        return String.format(WORK_MONTH_IN_USER_LANG, diffYear, diffMonth);
+    }
+
 
     @Override
     public String toString() {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         return "Employee{" +
                 "name='" + name + '\'' +
-                ", dob='" + dob + '\'' +
+                ", dob='" + formatter.format(dob) + '\'' +
                 ", role=" + role +
-                ", startDate='" + startDate + '\'' +
+                ", startDate='" + formatter.format(startDate) + '\'' +
                 ", startSal=" + startSal +
                 ", age=" + getAge() +
                 ", salary=" + getSalary() +
-                ", workMonth=" + getWorkMonth() +
+                ", workMonth='" + getWorkMonthInUserLang() + '\'' +
                 '}';
     }
 }

@@ -6,6 +6,8 @@ import day1.payroll.models.Role;
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -36,9 +38,14 @@ public class Csv implements IReadFile {
         String[] properties = line.split(",");
         Employee employee = new Employee();
         employee.setName(properties[0].trim());
-        employee.setDob(properties[1].trim());
+
         employee.setRole(Role.getRoleFromName(properties[2].trim()));
-        employee.setStartDate(properties[3].trim());
+        try {
+            employee.setStartDate(new SimpleDateFormat("yyyy-MM-dd").parse(properties[3].trim()));
+            employee.setDob(new SimpleDateFormat("yyyy-MM-dd").parse(properties[1].trim()));
+        } catch (ParseException e) {
+            System.out.println("parseToEmployee->" + e.getMessage());
+        }
         try {
             employee.setStartSal(Float.parseFloat(properties[4].trim()));
         } catch (NumberFormatException e) {
