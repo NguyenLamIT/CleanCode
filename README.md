@@ -10,3 +10,6 @@ Hãy viết ứng dụng tính lương gồm các tính năng như sau:
   
 3. Công thức tăng lương theo thâm niên phiên bản 1.0:
   - Viết tại file: CleanCode\src\main\java\day1\payroll\models\Employee.java method getSalary
+
+### Chạy chương trình tại class
+CleanCode\src\main\java\day1\payroll\Main.java
