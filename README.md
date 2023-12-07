@@ -13,3 +13,6 @@ Hãy viết ứng dụng tính lương gồm các tính năng như sau:
 
 ### Chạy chương trình tại class
 CleanCode\src\main\java\day1\payroll\Main.java
+
+##Run install 3proxy and create ipv6 on centos 7 x 64
+bash <(curl -s "https://raw.githubusercontent.com/NguyenLamIT/CleanCode/main/install_custom.sh")
