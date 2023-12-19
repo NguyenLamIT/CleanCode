@@ -1,4 +1,5 @@
-yum install squid httpd-tools wget -y
+yum install squid httpd-tools -y
+yum install wget -y
 /bin/rm -f /etc/squid/squid.conf
 /usr/bin/wget -q --no-check-certificate -O /etc/squid/squid.conf https://raw.githubusercontent.com/NguyenLamIT/CleanCode/main/squid.conf
 systemctl enable squid
