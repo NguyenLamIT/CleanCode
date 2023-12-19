@@ -6,3 +6,4 @@ systemctl restart squid
 if [ -f /usr/bin/firewall-cmd ]; then
 firewall-cmd --zone=public --permanent --add-port=9898/tcp > /dev/null 2>&1
 firewall-cmd --reload > /dev/null 2>&1
+echo -e "Finished creating proxy v4"
