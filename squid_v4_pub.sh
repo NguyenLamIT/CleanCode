@@ -11,5 +11,5 @@ if [ -f /usr/bin/firewall-cmd ]; then
 firewall-cmd --zone=public --permanent --add-port=9898/tcp > /dev/null 2>&1
 firewall-cmd --reload > /dev/null 2>&1
 fi
-htpasswd -c /etc/squid/passwd lamits01
+#htpasswd -c /etc/squid/passwd lamits01
 echo -e "Finished creating proxy v4"
